@@ -6,7 +6,7 @@ export default function Post(props) {
 
   const [bookmark, setBookMark] = useState('bookmark-outline');
   const [numberLikes, setNumberLikes] = useState(props.likes);
-  const [likeState, setLikeState] = useState({name: "heart-outline", class: ""});
+  const [likeState, setLikeState] = useState({ name: "heart-outline", class: "" });
 
   function isSave() {
     if (bookmark === "bookmark") {
@@ -18,19 +18,34 @@ export default function Post(props) {
 
   function clickLike() {
     if (likeState.name !== "heart") {
-      setLikeState({ name: "heart", red: "red-heart" });
-      setNumberLikes(numberLikes + 1);
+      setLikeState({ name: "heart", class: "red-heart" });
+
+      let newNumber = (parseInt(numberLikes.toString().replace(".", "")) + 1);
+      newNumber = newNumber.toString().substring(0, 3) + "." + newNumber.toString().substring(3);
+
+      setNumberLikes(newNumber);
     }
   }
 
   function toggleLike() {
+    let newNumber;
     if (likeState.name === "heart") {
-      setLikeState({ name: "heart-outline", red: "" })
-      setNumberLikes(numberLikes - 1);
+
+      setLikeState({ name: "heart-outline", class: "" });
+
+      newNumber = (parseInt(numberLikes.toString().replace(".", "")) - 1);
+      newNumber = newNumber.toString().substring(0, 3) + "." + newNumber.toString().substring(3);
+
+      setNumberLikes(newNumber);
       return;
+    } else {
+      setLikeState({ name: "heart", class: "red-heart" });
+
+      newNumber = (parseInt(numberLikes.toString().replace(".", "")) + 1);
+      newNumber = newNumber.toString().substring(0, 3) + "." + newNumber.toString().substring(3);
+
+      setNumberLikes(newNumber);
     }
-    setLikeState({ name: "heart", red: "red-heart" });
-    setNumberLikes(numberLikes + 1);
   }
 
 
@@ -53,7 +68,7 @@ export default function Post(props) {
       <div className="fundo">
         <div className="acoes">
           <div>
-            <ion-icon data-test="like-post" class={likeState.red} onClick={toggleLike} name={likeState.name}></ion-icon>
+            <ion-icon data-test="like-post" class={likeState.class} onClick={toggleLike} name={likeState.name}></ion-icon>
             <ion-icon name="chatbubble-outline"></ion-icon>
             <ion-icon name="paper-plane-outline"></ion-icon>
           </div>
